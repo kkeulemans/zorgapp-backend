@@ -34,7 +34,15 @@ private ClientRepository clientRepository;
 
     @Override
     public Client addClient(Long id, Long clientId) {
-       // var optionalDoctor ;
+       var optionalDoctor = doctorRepository.findById(id);
+       var optionalClient = clientRepository.findById(clientId);
+
+       if (optionalClient.isPresent() && optionalDoctor.isPresent()){
+           var doctor = optionalDoctor.get();
+           var client = optionalClient.get();
+
+           doctor.set
+       }
     }
 
     @Override

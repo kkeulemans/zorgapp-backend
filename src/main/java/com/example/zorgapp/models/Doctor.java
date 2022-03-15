@@ -50,4 +50,17 @@ public class Doctor extends User {
         this.lastName = lastName;
     }
 
+    public List<Client>  getClients(){
+        return clients ;
+    }
+
+    public void setClients(List<Client> clients){
+        this.clients = clients;
+    }
+
+    public void addClient (Client client){
+
+
+    }
+
 }

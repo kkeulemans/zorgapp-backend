@@ -63,6 +63,12 @@ public class Client extends User {
         this.doctor = doctor;
     }
 
+    public String getAddress(){ return address;}
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
     public List<Appointment> getAppointments() {
         return appointmentList;
     }

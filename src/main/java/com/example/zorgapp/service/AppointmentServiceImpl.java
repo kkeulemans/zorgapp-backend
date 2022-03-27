@@ -41,7 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment getAppointment(Long id) {
+    public AppointmentDto getAppointmentById(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         if(appointment.isPresent()) {
             return transferToDto(appointment.get());
@@ -78,11 +78,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     public AppointmentDto transferToDto(Appointment appointment){
         var dto = new  AppointmentDto();
-        dto.setId(dto.getId());
-        dto.setDate(dto.getDate());
-        dto.setTime(dto.getTime());
-        dto.setClient(dto.getClient());
-        dto.setDoctor(dto.getDoctor());
+        dto.setId(appointment.getId());
+        dto.setDate(appointment.getDate());
+        dto.setTime(appointment.getTime());
+        dto.setClient(appointment.getClient());
+        dto.setDoctor(appointment.getDoctor());
 
         return dto;
     }

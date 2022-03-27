@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    public List<Appointment> getAllAppointments();
-    public Appointment getAppointment(Long id);
+    public List<AppointmentDto> getAllAppointments();
+    public AppointmentDto getAppointmentById(Long id);
     AppointmentDto addAppointment (AppointmentDto appointmentDto);
     void deleteAppointment(Long id);
     void updateAppointment(Long id, Appointment appointment);
+    void assignToDoctor(Long id, Long doctorId);
+    void assignToClient(Long id, Long clientId);
 }

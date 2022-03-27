@@ -1,5 +1,6 @@
 package com.example.zorgapp.service;
 
+import com.example.zorgapp.dto.DoctorDto;
 import com.example.zorgapp.models.Client;
 import com.example.zorgapp.models.Doctor;
 
@@ -7,9 +8,9 @@ import java.util.List;
 
 public interface DoctorService {
 
-    public List<Doctor> getAllDoctors();
-    public Client addClient(Long id, Long clientId);
-    Doctor addDoctor (Doctor doctor);
+    public List<DoctorDto> getAllDoctors();
+    public void addClient(Long id, Long clientId);
+    DoctorDto addDoctor (DoctorDto dto);
     void deleteDoctor(Long id);
-    void updateDoctor(Long id, Doctor doctor);
+    void updateDoctor(Long id, DoctorDto dto);
 }

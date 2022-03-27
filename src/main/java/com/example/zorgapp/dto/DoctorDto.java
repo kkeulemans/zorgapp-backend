@@ -1,12 +1,17 @@
 package com.example.zorgapp.dto;
 
 
+import com.example.zorgapp.models.Client;
+
+import java.util.List;
+
 public class DoctorDto {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String workAddress;
+    private List<Client> clients;
 
     public DoctorDto(){}
 
@@ -45,5 +50,19 @@ public class DoctorDto {
 
     public void setWorkAddress(String workAddress) {
         this.workAddress = workAddress;
+    }
+
+
+    public List<Client> getClients(){
+        return clients ;
+    }
+
+    public void setClients(List<Client> clients){
+        this.clients = clients;
+    }
+
+    public void addClient (Client client){
+        clients.add(client);
+
     }
 }

@@ -33,23 +33,42 @@ private ClientRepository clientRepository;
     }
 
     @Override
-    public Client addClient(Long id, Long clientId) {
-       // var optionalDoctor ;
+    public void addClient(Long id, Long clientId) {
+       var optionalDoctor = doctorRepository.findById(id);
+       var optionalClient = clientRepository.findById(clientId);
+
+       if (optionalClient.isPresent() && optionalDoctor.isPresent()){
+           var doctor = optionalDoctor.get();
+           var client = optionalClient.get();
+
+           doctor.addClient(client);
+       }
     }
 
     @Override
-    public Doctor addDoctor(Doctor doctor) {
-        return null;
+    public DoctorDto addDoctor(DoctorDto dto) {
+
+        Doctor doctor = transferToDoctor(dto);
+        doctorRepository.save(doctor);
+
+        return dto;
+
     }
 
     @Override
     public void deleteDoctor(Long id) {
-
+            doctorRepository.deleteById(id);
     }
 
     @Override
-    public void updateDoctor(Long id, Doctor doctor) {
-
+    public void updateDoctor(Long id, DoctorDto dto) {
+        if (doctorRepository.findById(id).isPresent()){
+            Doctor doctor = doctorRepository.findById(id).get();
+            doctor.setId(doctor.getId());
+            doctor.setFirstName(doctor.getFirstName());
+            doctor.setLastName(doctor.getLastName());
+            doctor.setWorkAddress(doctor.getWorkAddress());
+        }
     }
 
     public DoctorDto transfertoDto(Doctor doctor){
@@ -57,7 +76,19 @@ private ClientRepository clientRepository;
         dto.setFirstName(doctor.getFirstName());
         dto.setId(doctor.getId());
         dto.setLastName(doctor.getLastName());
+        dto.setClients(dto.getClients());
+        dto.setWorkAddress(dto.getWorkAddress());
 
         return dto;
+    }
+
+    public Doctor transferToDoctor (DoctorDto dto){
+        var doctor = new Doctor();
+
+        doctor.setId(dto.getId());
+        doctor.setFirstName(dto.getFirstName());
+        doctor.setLastName(dto.getLastName());
+        doctor.setWorkAddress(doctor.getWorkAddress());
+        return doctor;
     }
 }

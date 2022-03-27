@@ -9,8 +9,8 @@ import java.util.List;
 public interface DoctorService {
 
     public List<DoctorDto> getAllDoctors();
-    public Client addClient(Long id, Long clientId);
-    Doctor addDoctor (Doctor doctor);
+    public void addClient(Long id, Long clientId);
+    DoctorDto addDoctor (DoctorDto dto);
     void deleteDoctor(Long id);
-    void updateDoctor(Long id, Doctor doctor);
+    void updateDoctor(Long id, DoctorDto dto);
 }

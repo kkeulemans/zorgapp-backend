@@ -12,6 +12,6 @@ public interface ClientService {
     Client addClient (Client client);
     void deleteClient(Long id);
     void updateClient(Long id, Client client);
-    Doctor addDoctor(Long id, Doctor doctor);
+    void addDoctor(Long doctorId, Long id);
 
 }

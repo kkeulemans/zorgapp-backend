@@ -16,9 +16,14 @@ public class Doctor extends User {
     @OneToMany(mappedBy = "doctor")
     private List<Client> clients;
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Message> messageList;
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointmentList;
+
     @Column(name = "first_name")
     String firstName;
-
 
     @Column(name = "last_name")
     String lastName;
@@ -50,8 +55,22 @@ public class Doctor extends User {
         this.lastName = lastName;
     }
 
+    public String getWorkAddress() {
+        return  workAddress;
+    }
+
+    public void setWorkAddress(String workAddress) {
+        this.workAddress = workAddress;
+    }
+
     public List<Client>  getClients(){
         return clients ;
+    }
+    public List<Appointment>  getAppointments(){
+        return appointmentList ;
+    }
+    public List<Message>  getMessages(){
+        return messageList ;
     }
 
     public void setClients(List<Client> clients){
@@ -59,8 +78,8 @@ public class Doctor extends User {
     }
 
     public void addClient (Client client){
-
-
+        clients.add(client);
     }
+
 
 }

@@ -3,9 +3,6 @@ package com.example.zorgapp.dto;
 import com.example.zorgapp.models.Client;
 import com.example.zorgapp.models.Doctor;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.File;
 
 public class MessageDto {

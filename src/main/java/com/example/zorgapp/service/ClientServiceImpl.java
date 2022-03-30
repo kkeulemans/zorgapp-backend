@@ -5,6 +5,7 @@ import com.example.zorgapp.exceptions.RecordNotFoundException;
 import com.example.zorgapp.models.Appointment;
 import com.example.zorgapp.models.Client;
 import com.example.zorgapp.models.Doctor;
+import com.example.zorgapp.repositories.AppointmentRepository;
 import com.example.zorgapp.repositories.ClientRepository;
 import com.example.zorgapp.repositories.DoctorRepository;
 import org.aspectj.apache.bcel.generic.InstructionConstants;
@@ -21,6 +22,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
     public List<ClientDto> getAllClients() {
@@ -53,7 +57,15 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void updateClient(Long id, ClientDto clientDto) {
+        if (clientRepository.findById(id).isPresent()){
 
+            Client client = clientRepository.findById(id).get();
+            client.setId(clientDto.getId());
+            client.setFirstName(clientDto.getFirstName());
+            client.setLastName(clientDto.getLastName());
+            client.setDoctor(clientDto.getDoctor());
+            client.setAddress(clientDto.getAddress());
+        }
     }
 
     @Override
@@ -71,6 +83,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void addAppointment(Long id, Long appointmentId) {
 
+        var optionalAppointment = appointmentRepository.findById(appointmentId);
+        var optionalClient = clientRepository.findById(id);
+        if (optionalAppointment.isPresent() && optionalClient.isPresent()) {
+            var client = optionalClient.get();
+            var appointment = optionalAppointment.get();}
     }
 
     @Override

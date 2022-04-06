@@ -29,11 +29,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentDto> getAllAppointments() {
-        List<Appointment> appointmentList= appointmentRepository.findAll();
+        List<Appointment> appointmentList = appointmentRepository.findAll();
         List<AppointmentDto> appointmentDtoList = new ArrayList<>();
 
 
-        for (Appointment appointment: appointmentList){
+        for (Appointment appointment : appointmentList) {
             AppointmentDto dto = transferToDto(appointment);
             appointmentDtoList.add(dto);
         }
@@ -41,9 +41,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment getAppointment(Long id) {
+    public AppointmentDto getAppointmentById(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
-        if(appointment.isPresent()) {
+        if (appointment.isPresent()) {
             return transferToDto(appointment.get());
         } else {
             throw new RecordNotFoundException("No remotecontroller found");
@@ -64,7 +64,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void updateAppointment(Long id, Appointment appointment) {
-        if(!appointmentRepository.existsById(id)){
+        if (!appointmentRepository.existsById(id)) {
             throw new RecordNotFoundException("No appointment found");
         }
         Appointment storedAppointment = appointmentRepository.findById(id).orElse(null);
@@ -76,18 +76,45 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
-    public AppointmentDto transferToDto(Appointment appointment){
-        var dto = new  AppointmentDto();
-        dto.setId(dto.getId());
-        dto.setDate(dto.getDate());
-        dto.setTime(dto.getTime());
-        dto.setClient(dto.getClient());
-        dto.setDoctor(dto.getDoctor());
+    @Override
+    public void assignToDoctor(Long id, Long doctorId) {
+        var optionalAppointment = appointmentRepository.findById(id);
+        var optionalDoctor = doctorRepository.findById(doctorId);
+        if (optionalAppointment.isPresent() && optionalDoctor.isPresent()) {
+            var doctor = optionalDoctor.get();
+            var appointment = optionalAppointment.get();
+
+            appointment.setDoctor(doctor);
+            appointmentRepository.save(appointment);
+        }
+
+    }
+
+    @Override
+    public void assignToClient(Long id, Long clientId) {
+        var optionalAppointment = appointmentRepository.findById(id);
+        var optionalClient = clientRepository.findById(clientId);
+        if (optionalAppointment.isPresent() && optionalClient.isPresent()) {
+            var client = optionalClient.get();
+            var appointment = optionalAppointment.get();
+
+            appointment.setClient(client);
+            appointmentRepository.save(appointment);
+        }
+    }
+
+    public AppointmentDto transferToDto(Appointment appointment) {
+        var dto = new AppointmentDto();
+        dto.setId(appointment.getId());
+        dto.setDate(appointment.getDate());
+        dto.setTime(appointment.getTime());
+        dto.setClient(appointment.getClient());
+        dto.setDoctor(appointment.getDoctor());
 
         return dto;
     }
 
-    public Appointment transferToAppointment(AppointmentDto appointmentDto){
+    public Appointment transferToAppointment(AppointmentDto appointmentDto) {
         var appointment = new Appointment();
         appointment.setId(appointmentDto.getId());
         appointment.setClient(appointmentDto.getClient());

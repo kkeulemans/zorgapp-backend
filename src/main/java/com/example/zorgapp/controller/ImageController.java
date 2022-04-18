@@ -1,0 +1,41 @@
+package com.example.zorgapp.controller;
+import com.example.zorgapp.models.Image;
+import com.example.zorgapp.models.Message;
+import com.example.zorgapp.repositories.ImageRepository;
+import com.example.zorgapp.repositories.MessageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+public class ImageController {
+    @Autowired
+    ImageRepository imgRepos;
+    @Autowired
+    MessageRepository messageRepository;
+
+    @PostMapping("/messages/{id}")
+    public String upload(@RequestBody MultipartFile file, @PathVariable("id") Long id) {
+        Image img = new Image();
+        Message message = messageRepository.findById(id).get();
+        try {
+            img.content = file.getBytes();
+            img.addToMessage(message);
+        }
+        catch (IOException iex) {
+            return "Error while uploading image...";
+        }
+
+        imgRepos.save(img);
+        return "Image uploaded";
+    }
+
+    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] download(@PathVariable Long id) {
+        Image img = imgRepos.findById(id).get();
+        return img.content;
+    }
+}

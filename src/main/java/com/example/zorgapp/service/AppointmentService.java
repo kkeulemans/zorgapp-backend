@@ -12,7 +12,7 @@ public interface AppointmentService {
     public AppointmentDto getAppointmentById(Long id);
     AppointmentDto addAppointment (AppointmentDto appointmentDto);
     void deleteAppointment(Long id);
-    void updateAppointment(Long id, Appointment appointment);
+    void updateAppointment(Long id, AppointmentDto appointment);
     void assignToDoctor(Long id, Long doctorId);
     void assignToClient(Long id, Long clientId);
 }

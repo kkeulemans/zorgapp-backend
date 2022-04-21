@@ -63,7 +63,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void updateAppointment(Long id, Appointment appointment) {
+    public void updateAppointment(Long id, AppointmentDto appointment) {
+        appointment.setId(id);
         if (!appointmentRepository.existsById(id)) {
             throw new RecordNotFoundException("No appointment found");
         }
@@ -73,6 +74,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         storedAppointment.setDoctor(appointment.getDoctor());
         storedAppointment.setDate(appointment.getDate());
         storedAppointment.setTime(appointment.getTime());
+        appointmentRepository.save(storedAppointment);
 
     }
 
@@ -87,7 +89,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setDoctor(doctor);
             appointmentRepository.save(appointment);
         }
-
+        else{}
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.example.zorgapp.models;
 
-import com.example.zorgapp.models.Client;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,13 +14,13 @@ public class Doctor extends User {
     private Long id;
 
     @OneToMany(mappedBy = "doctor")
-    private List<Client> clients;
+    List<Client> clients ;
 
     @OneToMany(mappedBy = "doctor")
     private List<Message> messageList;
 
     @OneToMany(mappedBy = "doctor")
-    private List<Appointment> appointmentList;
+    List<Appointment> appointmentList;
 
     @Column(name = "first_name")
     String firstName;
@@ -75,6 +75,9 @@ public class Doctor extends User {
 
     public void setClients(List<Client> clients){
         this.clients = clients;
+    }
+    public void setAppointments(List <Appointment> appointmentList){
+        this.appointmentList = appointmentList;
     }
 
     public void addClient (Client client){

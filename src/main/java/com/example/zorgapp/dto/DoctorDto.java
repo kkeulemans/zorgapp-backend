@@ -12,14 +12,20 @@ public class DoctorDto {
     private String lastName;
     private String workAddress;
     private List<Client> clients;
+    private String password;
+    private String email;
+    private String username;
 
     public DoctorDto(){}
 
-    public DoctorDto(Long id, String firstName, String lastName, String workAddress){
+    public DoctorDto(Long id, String firstName, String lastName, String workAddress, String email, String password){
         this.firstName = firstName;
         this.id = id;
         this.lastName = lastName;
         this.workAddress = workAddress;
+        this.email = email;
+        this.password = password;
+        this.username = email;
     }
     public Long getId() {
         return id;
@@ -41,7 +47,7 @@ public class DoctorDto {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = firstName;
+        this.lastName = lastName;
     }
 
     public String getWorkAddress() {
@@ -52,6 +58,26 @@ public class DoctorDto {
         this.workAddress = workAddress;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getUsername() {
+        username = email;
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public List<Client> getClients(){
         return clients ;

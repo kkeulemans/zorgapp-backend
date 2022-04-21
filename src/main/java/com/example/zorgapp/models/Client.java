@@ -2,6 +2,7 @@ package com.example.zorgapp.models;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,15 +14,14 @@ public class Client extends User {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     @OneToMany(mappedBy = "client")
-    private List<Message> messageList;
+    List<Message> messageList;
 
     @OneToMany(mappedBy = "client")
-    private List<Appointment> appointmentList;
+    List<Appointment> appointmentList;
 
     @Column(name = "first_name")
     String firstName;

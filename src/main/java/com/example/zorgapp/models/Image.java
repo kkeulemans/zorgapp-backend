@@ -12,7 +12,7 @@ public class Image {
     public byte[] content;
 
     @OneToOne
-    @JoinColumn(name = "message")
+    @JoinColumn(name = "message_id")
     private Message message;
 
     public Long getId() {
@@ -26,7 +26,9 @@ public class Image {
     public byte[] getContent(){
         return content;
     }
-    public void setContent(){}
+    public void setContent(byte[] content){
+        this.content = content;
+    }
 
     public Message getMessage(){
         return message;

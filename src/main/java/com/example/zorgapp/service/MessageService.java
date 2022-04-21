@@ -15,4 +15,5 @@ public interface MessageService {
     void updateMessage(Long id, MessageDto message);
     void assignToDoctor(Long id, Long doctorId);
     void assignToClient(Long id, Long clientId);
+    void addAttachment (Long id, Long attachmentId);
 }

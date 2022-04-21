@@ -1,6 +1,7 @@
 package com.example.zorgapp.service;
 
 import com.example.zorgapp.dto.ClientDto;
+import com.example.zorgapp.dto.DoctorDto;
 import com.example.zorgapp.exceptions.RecordNotFoundException;
 import com.example.zorgapp.models.Appointment;
 import com.example.zorgapp.models.Client;
@@ -8,10 +9,12 @@ import com.example.zorgapp.models.Doctor;
 import com.example.zorgapp.repositories.AppointmentRepository;
 import com.example.zorgapp.repositories.ClientRepository;
 import com.example.zorgapp.repositories.DoctorRepository;
+import com.example.zorgapp.repositories.MessageRepository;
 import org.aspectj.apache.bcel.generic.InstructionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +29,20 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
+    @Autowired
+    private MessageRepository messageRepository;
+
     @Override
     public List<ClientDto> getAllClients() {
-        return null;
+        List<Client> clients = clientRepository.findAll();
+        List<ClientDto> clientDtoList = new ArrayList<>();
+
+
+        for (Client client : clients) {
+            ClientDto dto = transferToDto(client);
+            clientDtoList.add(dto);
+        }
+        return clientDtoList;
     }
 
     @Override
@@ -46,6 +60,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto addClient(ClientDto clientDto) {
         Client clientToBeAdded = transferToClient(clientDto);
+        Doctor doctor = clientToBeAdded.getDoctor();
+        doctor.getId();
         clientRepository.save(clientToBeAdded);
         return clientDto;
     }
@@ -57,14 +73,18 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void updateClient(Long id, ClientDto clientDto) {
+        clientDto.setId(id);
         if (clientRepository.findById(id).isPresent()){
-
             Client client = clientRepository.findById(id).get();
-            client.setId(clientDto.getId());
+            client.setId(client.getId());
             client.setFirstName(clientDto.getFirstName());
             client.setLastName(clientDto.getLastName());
             client.setDoctor(clientDto.getDoctor());
             client.setAddress(clientDto.getAddress());
+            client.setEmail(clientDto.getEmail());
+            client.setPassword(clientDto.getPassword());
+            client.setUsername(clientDto.getUsername());
+            clientRepository.save(client);
         }
     }
 
@@ -82,27 +102,45 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void addAppointment(Long id, Long appointmentId) {
-
         var optionalAppointment = appointmentRepository.findById(appointmentId);
         var optionalClient = clientRepository.findById(id);
         if (optionalAppointment.isPresent() && optionalClient.isPresent()) {
             var client = optionalClient.get();
-            var appointment = optionalAppointment.get();}
+            var appointment = optionalAppointment.get();
+
+            var list = client.getAppointments();
+            list.add(appointment);
+            client.setAppointments(list);
+            clientRepository.save(client);
+        }
     }
 
     @Override
     public void addMessage(Long id, Long messageId) {
 
+        var optionalMessage = messageRepository.findById(messageId);
+        var optionalClient = clientRepository.findById(id);
+        if (optionalMessage.isPresent() && optionalClient.isPresent()) {
+            var client = optionalClient.get();
+            var message = optionalMessage.get();
+
+            var list = client.getMessages();
+            list.add(message);
+            client.setMessages(list);
+            clientRepository.save(client);
+        }
     }
 
-    public Client transferToClient(ClientDto clientDto) {
+    public Client transferToClient(ClientDto dto) {
         var client = new Client();
-        client.setId(clientDto.getId());
-        client.setFirstName(clientDto.getFirstName());
-        client.setLastName(clientDto.getLastName());
-        client.setDoctor(clientDto.getDoctor());
-        client.setAddress(clientDto.getAddress());
-
+        client.setId(dto.getId());
+        client.setFirstName(dto.getFirstName());
+        client.setLastName(dto.getLastName());
+        client.setDoctor(dto.getDoctor());
+        client.setAddress(dto.getAddress());
+        client.setEmail(dto.getEmail());
+        client.setPassword(dto.getPassword());
+        client.setUsername(dto.getUsername());
 
         return client;
     }
@@ -113,9 +151,9 @@ public class ClientServiceImpl implements ClientService {
         ClientDto.setFirstName(client.getFirstName());
         ClientDto.setLastName(client.getLastName());
         ClientDto.setAddress(client.getAddress());
-
-
-
+        ClientDto.setEmail(client.getEmail());
+        ClientDto.setPassword(client.getPassword());
+        ClientDto.setUsername(client.getUsername());
         return ClientDto;
     }
 }

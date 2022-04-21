@@ -3,17 +3,14 @@ package com.example.zorgapp.service;
 import com.example.zorgapp.dto.AppointmentDto;
 import com.example.zorgapp.dto.MessageDto;
 import com.example.zorgapp.exceptions.RecordNotFoundException;
-import com.example.zorgapp.models.Appointment;
-import com.example.zorgapp.models.Client;
-import com.example.zorgapp.models.Doctor;
-import com.example.zorgapp.models.Message;
+import com.example.zorgapp.models.*;
 import com.example.zorgapp.repositories.ClientRepository;
 import com.example.zorgapp.repositories.DoctorRepository;
+import com.example.zorgapp.repositories.ImageRepository;
 import com.example.zorgapp.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +27,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
 
 
@@ -65,6 +65,20 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void updateMessage(Long id, MessageDto message) {
+        message.setId(id);
+        if (messageRepository.findById(id).isPresent()) {
+            Message storedMessage = messageRepository.findById(id).get();
+            storedMessage.setId(message.getId());
+            storedMessage.setBody(message.getBody());
+            storedMessage.setTitle(message.getTitle());
+            messageRepository.save(storedMessage);
+
+        }
+        else{
+            throw new RecordNotFoundException("No message found");
+        }
+
+
 
     }
 
@@ -110,11 +124,8 @@ public class MessageServiceImpl implements MessageService {
     public MessageDto transferToDto(Message message){
         var dto = new  MessageDto();
         dto.setId(message.getId());
-        dto.setAttachment(message.getAttachment());
         dto.setBody(message.getBody());
         dto.setTitle(message.getTitle());
-        dto.setClient(message.getClient());
-        dto.setDoctor(message.getDoctor());
 
         return dto;
     }
@@ -122,13 +133,26 @@ public class MessageServiceImpl implements MessageService {
     public Message transferToMessage(MessageDto messageDto){
         var message = new Message();
         message.setId(messageDto.getId());
-        message.setClient(messageDto.getClient());
-        message.setDoctor(messageDto.getDoctor());
-        message.setAttachment(message.getAttachment());
-        message.setBody(message.getBody());
-        message.setTitle(message.getTitle());
+        message.setBody(messageDto.getBody());
+        message.setTitle(messageDto.getTitle());
 
         return message;
     }
 
+    public void addAttachment (Long id, Long attachmentId){
+        Optional<Message> optionalMessage = messageRepository.findById(id);
+        Optional<Image> optionalImage = imageRepository.findById(attachmentId);
+
+        if(optionalMessage.isPresent() && optionalImage.isPresent()){
+            var message = optionalMessage.get();
+            var image = optionalImage.get();
+
+            message.setAttachment(image);
+            messageRepository.save(message);
+
+        }
+        else {
+            throw new RecordNotFoundException("Client or Message not found");
+        }
+    }
 }

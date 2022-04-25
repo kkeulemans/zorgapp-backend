@@ -1,36 +1,28 @@
 package com.example.zorgapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "message")
+@Table(name = "messages")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+
     @Column(name = "title")
     private String title;
     @Column(name = "body")
     private String body;
     @OneToOne
-    @JoinColumn(name = "attachment_id")
+    @JoinColumn(name = "image_id")
     private Image attachment;
 
-    public Client getClient() {
-        return client;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
+    @ManyToMany(mappedBy = "messages")
+    List<Account> users = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -51,15 +43,6 @@ public class Message {
         return attachment;
     }
 
-    public Client setClient( Client client) {
-        this.client = client;
-        return client;
-    }
-
-    public Doctor setDoctor( Doctor doctor) {
-        this.doctor = doctor;
-        return doctor;
-    }
 
     public String setTitle( String title){
         this.title = title;
@@ -73,5 +56,13 @@ public class Message {
     public Image setAttachment( Image attachment){
         this.attachment = attachment;
         return attachment;
+    }
+
+    public List<Account> getAccounts() {
+        return users;
+    }
+
+    public void addUser(Account user) {
+        this.users.add(user);
     }
 }

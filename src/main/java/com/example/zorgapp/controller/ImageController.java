@@ -1,8 +1,9 @@
 package com.example.zorgapp.controller;
-import com.example.zorgapp.models.Image;
-import com.example.zorgapp.models.Message;
-import com.example.zorgapp.repositories.ImageRepository;
-import com.example.zorgapp.repositories.MessageRepository;
+
+import com.example.zorgappfinal.models.Image;
+import com.example.zorgappfinal.models.Message;
+import com.example.zorgappfinal.repositories.ImageRepository;
+import com.example.zorgappfinal.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -43,10 +44,10 @@ public class ImageController {
 
     @DeleteMapping("/messages/{id}/{attachmentId}")
     public void deleteAttachment (@PathVariable("id") Long messageId,@PathVariable("attachmentId") Long id ){
-       Message message= messageRepository.findById(messageId).get();
-       message.setAttachment(null);
-       messageRepository.save(message);
-       imgRepos.deleteById(id);
+        Message message= messageRepository.findById(messageId).get();
+        message.setAttachment(null);
+        messageRepository.save(message);
+        imgRepos.deleteById(id);
     };
 
 }

@@ -1,14 +1,18 @@
 package com.example.zorgapp.models;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name ="images")
 public class Image {
     @Id
     @GeneratedValue
     Long id;
 
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     public byte[] content;
 
     @OneToOne

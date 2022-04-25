@@ -2,23 +2,23 @@ package com.example.zorgapp.dto;
 
 import com.example.zorgapp.models.Client;
 import com.example.zorgapp.models.Doctor;
+import com.example.zorgapp.models.Image;
 
-import java.io.File;
 
 public class MessageDto {
 
     private Long id;
-    private Doctor doctor;
-    private Client client;
+    private DoctorDto doctor;
+    private ClientDto client;
     private String title;
     private String body;
-    private File attachment;
+    private ImageDto attachment;
 
-    public Client getClient() {
+    public ClientDto getClient() {
         return client;
     }
 
-    public Doctor getDoctor() {
+    public DoctorDto getDoctor() {
         return doctor;
     }
 
@@ -34,7 +34,7 @@ public class MessageDto {
         return body;
     }
 
-    public File getAttachment(){
+    public ImageDto getAttachment(){
         return attachment;
     }
 
@@ -42,12 +42,12 @@ public class MessageDto {
     public void setId(Long id) {
         this.id = id;
     }
-    public Client setClient( Client client) {
+    public ClientDto setClient( ClientDto client) {
         this.client = client;
         return client;
     }
 
-    public Doctor setDoctor( Doctor doctor) {
+    public DoctorDto setDoctor( DoctorDto doctor) {
         this.doctor = doctor;
         return doctor;
     }
@@ -61,7 +61,7 @@ public class MessageDto {
         return body;
     }
 
-    public File setAttachment( File attachment){
+    public ImageDto setAttachment( ImageDto attachment){
         this.attachment = attachment;
         return attachment;
     }

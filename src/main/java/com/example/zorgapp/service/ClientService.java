@@ -3,9 +3,11 @@ package com.example.zorgapp.service;
 import com.example.zorgapp.dto.ClientDto;
 import com.example.zorgapp.models.Client;
 import com.example.zorgapp.models.Doctor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface ClientService {
 
     public List<ClientDto> getAllClients();

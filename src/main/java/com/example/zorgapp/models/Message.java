@@ -5,12 +5,11 @@ import java.io.File;
 import java.util.List;
 
 @Entity
+@Table(name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
@@ -21,8 +20,9 @@ public class Message {
     private String title;
     @Column(name = "body")
     private String body;
-    @Column(name = "attachment")
-    private File attachment;
+    @OneToOne
+    @JoinColumn(name = "attachment_id")
+    private Image attachment;
 
     public Client getClient() {
         return client;
@@ -47,7 +47,7 @@ public class Message {
         return body;
     }
 
-    public File getAttachment(){
+    public Image getAttachment(){
         return attachment;
     }
 
@@ -70,7 +70,7 @@ public class Message {
         return body;
     }
 
-    public File setAttachment( File attachment){
+    public Image setAttachment( Image attachment){
         this.attachment = attachment;
         return attachment;
     }
